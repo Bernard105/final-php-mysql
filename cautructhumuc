@@ -1,0 +1,77 @@
+├── app/
+│   ├── Core/
+│   │   ├── Database.php
+│   │   ├── Router.php
+│   │   ├── Request.php
+│   │   ├── Response.php
+│   │   ├── Session.php
+│   │   ├── View.php
+│   │   ├── Auth.php
+│   │   ├── Validator.php
+│   │   └── Container.php
+│   ├── Models/
+│   │   ├── BaseModel.php
+│   │   ├── Product.php
+│   │   ├── Category.php
+│   │   ├── Brand.php
+│   │   ├── User.php
+│   │   ├── Cart.php
+│   │   └── Order.php
+│   ├── Controllers/
+│   │   ├── Controller.php
+│   │   ├── HomeController.php
+│   │   ├── ProductController.php
+│   │   ├── CartController.php
+│   │   ├── UserController.php
+│   │   └── Admin/
+│   │       ├── AdminController.php
+│   │       ├── ProductController.php
+│   │       ├── CategoryController.php
+│   │       └── BrandController.php
+│   ├── Services/
+│   │   ├── CartService.php
+│   │   ├── PaymentService.php
+│   │   ├── EmailService.php
+│   │   └── FileUploadService.php
+│   ├── Middleware/
+│   │   ├── AuthMiddleware.php
+│   │   └── AdminMiddleware.php
+│   ├── Exceptions/
+│   │   ├── DatabaseException.php
+│   │   ├── ValidationException.php
+│   │   └── AuthException.php
+│   └── Utils/
+│       └── Helpers.php
+│   └── ├── Routers/
+│           ├── web.php
+│           └── admin.php
+├── public/
+│   ├── index.php
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   └── uploads/
+│       ├── products/
+│       └── payments/
+├── views/
+│   ├── layouts/
+│   │   ├── main.php
+│   │   └── admin.php
+│   ├── home/
+│   ├── products/
+│   ├── cart/
+│   ├── user/
+│   ├── admin/
+│   └── partials/
+├── config/
+│   ├── database.php
+│   ├── app.php
+│   └── constants.php
+├── storage/
+│   ├── logs/
+│   └── cache/
+├── vendor/
+├── composer.json
+├── .htaccess
+└── README.md

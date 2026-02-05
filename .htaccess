@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect all requests to public folder.
+    # Works even when the project is installed in a subfolder (e.g. /vtc-php/ecommerce-oop/)
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
+</IfModule>

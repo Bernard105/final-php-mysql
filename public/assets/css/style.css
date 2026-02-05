@@ -1,0 +1,30 @@
+/* Project theme helpers (Bootstrap-first)
+   Keep this file for small overrides so pages stay consistent.
+*/
+
+.brand-strip::-webkit-scrollbar { height: 8px; }
+.brand-strip::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 99px; }
+
+/* Carousel: make multi-item slides look nicer */
+.carousel .carousel-inner { padding-bottom: 18px; }
+.carousel .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+}
+
+/* Improve hit area on carousel controls over white backgrounds */
+.carousel .carousel-control-prev-icon,
+.carousel .carousel-control-next-icon {
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+}
+
+/* Tabs badges */
+.best-seller-tabs .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Newsletter form spacing */
+.newsletter-form .form-text { margin-top: .5rem; }
