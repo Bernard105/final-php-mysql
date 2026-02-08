@@ -97,15 +97,84 @@
       <?php if (empty($products)): ?>
         <div class="alert alert-info">No products found.</div>
       <?php else: ?>
+        <!-- Instant (client-side) controls – progressive enhancement (does NOT replace server filters) -->
+        <div class="card mb-3 product-toolbar" data-products-toolbar>
+          <div class="card-body">
+            <div class="d-flex flex-wrap align-items-end gap-2">
+              <div class="flex-grow-1" style="min-width: 220px;">
+                <label class="form-label mb-1">Quick search (in this page)</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                  <input class="form-control" type="search" placeholder="Type to filter…" data-products-q>
+                </div>
+              </div>
+
+              <div style="min-width: 190px;">
+                <label class="form-label mb-1">Sort (in this page)</label>
+                <select class="form-select" data-products-sort>
+                  <option value="relevance">Relevance</option>
+                  <option value="price_asc">Price: Low → High</option>
+                  <option value="price_desc">Price: High → Low</option>
+                  <option value="title_asc">Title: A → Z</option>
+                  <option value="title_desc">Title: Z → A</option>
+                </select>
+              </div>
+
+              <div class="ms-auto text-muted" style="min-width: 160px;">
+                <div class="small">Showing</div>
+                <div class="fw-semibold"><span data-products-visible>0</span> / <span data-products-total>0</span></div>
+              </div>
+            </div>
+
+            <div class="mt-3" data-products-price>
+              <div class="d-flex align-items-center justify-content-between">
+                <label class="form-label mb-1">Price range (in this page)</label>
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-products-reset>Reset</button>
+              </div>
+              <div class="row g-2 align-items-center">
+                <div class="col-12 col-md-8">
+                  <div class="range-2">
+                    <input class="form-range" type="range" data-price-min>
+                    <input class="form-range" type="range" data-price-max>
+                  </div>
+                </div>
+                <div class="col-6 col-md-2">
+                  <input class="form-control" type="number" step="0.01" data-price-min-input>
+                </div>
+                <div class="col-6 col-md-2">
+                  <input class="form-control" type="number" step="0.01" data-price-max-input>
+                </div>
+              </div>
+              <div class="form-text">Tip: server-side filters (left) search the whole catalog; this bar only filters the current page.</div>
+            </div>
+          </div>
+        </div>
+
         <div class="row g-3">
           <?php foreach (($products ?? []) as $p): ?>
             <div class="col-12 col-sm-6 col-xl-4">
-              <div class="card product-card h-100">
-                <img class="product-img" src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($p['product_image1'] ?? 'default.png') ?>" alt="">
+              <div
+                class="card product-card h-100"
+                data-product-card
+                data-product-id="<?= (int)($p['product_id'] ?? 0) ?>"
+                data-product-title="<?= htmlspecialchars($p['product_title'] ?? '') ?>"
+                data-product-price="<?= htmlspecialchars((string)($p['product_price'] ?? '0')) ?>"
+                data-product-img="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($p['product_image1'] ?? 'default.png') ?>"
+                data-product-url="<?= SITE_URL ?>/product/<?= (int)($p['product_id'] ?? 0) ?>"
+              >
+                <img class="product-img img-skeleton" src="<?= SITE_URL ?>/uploads/<?= htmlspecialchars($p['product_image1'] ?? 'default.png') ?>" alt="">
                 <div class="card-body">
                   <h5 class="card-title"><?= htmlspecialchars($p['product_title'] ?? '') ?></h5>
                   <p class="card-text text-muted mb-2">$<?= htmlspecialchars($p['product_price'] ?? '0.00') ?></p>
-                  <a class="btn btn-primary btn-sm" href="<?= SITE_URL ?>/product/<?= (int)$p['product_id'] ?>">Details</a>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-primary btn-sm" href="<?= SITE_URL ?>/product/<?= (int)$p['product_id'] ?>">Details</a>
+                    <a class="btn btn-outline-primary btn-sm" href="<?= SITE_URL ?>/product/<?= (int)$p['product_id'] ?>" data-quick-view>
+                      Quick view
+                    </a>
+                    <button class="btn btn-success btn-sm" type="button" data-add-to-cart data-product-id="<?= (int)$p['product_id'] ?>">
+                      Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

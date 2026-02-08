@@ -11,99 +11,19 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Custom CSS -->
+    <!-- Custom CSS (Bootstrap-first overrides + UX polish) -->
     <link rel="stylesheet" href="<?= SITE_URL ?>/assets/css/style.css">
-    
-    <!-- jQuery -->
+
+    <!-- jQuery (kept for existing AJAX helpers) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <style>
-        :root {
-            --primary-color: #0d6efd;
-            --secondary-color: #6c757d;
-            --success-color: #198754;
-            --danger-color: #dc3545;
-            --warning-color: #ffc107;
-            --info-color: #0dcaf0;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 70px;
-        }
-        
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        
-        .product-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .product-img {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
-        
-        .cart-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-        }
-        
-        .badge-notification {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-        }
-        
-        .footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 40px 0 20px;
-            margin-top: 50px;
-        }
-        
-        .footer a {
-            color: #ddd;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-        
-        .social-icons a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            margin-right: 10px;
-            transition: background 0.3s;
-        }
-        
-        .social-icons a:hover {
-            background: var(--primary-color);
-        }
-    </style>
+
+    <!-- Make SITE_URL available to JS safely -->
+    <script>
+      window.SITE_URL = <?= json_encode(SITE_URL) ?>;
+    </script>
 </head>
 <body>
+    <a class="skip-link btn btn-light" href="#mainContent">Skip to content</a>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
@@ -173,7 +93,7 @@
                 <ul class="navbar-nav">
                     <!-- Cart -->
                     <li class="nav-item">
-                        <a class="nav-link position-relative" href="<?= SITE_URL ?>/cart">
+                        <a class="nav-link position-relative js-cart-link" href="<?= SITE_URL ?>/cart" aria-label="Cart">
                             <i class="fas fa-shopping-cart"></i>
                             <?php if (isset($_SESSION['cart_count']) && $_SESSION['cart_count'] > 0): ?>
                                 <span class="badge bg-danger badge-notification">
@@ -263,7 +183,7 @@
     <?php endif; ?>
 
     <!-- Main Content -->
-    <main class="container py-4">
+    <main id="mainContent" class="container py-4">
         <?= $content ?? '' ?>
     </main>
 
@@ -332,56 +252,84 @@
         </div>
     </footer>
 
+    <!-- Mini cart offcanvas (progressive enhancement: link still works without JS) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="miniCart" aria-labelledby="miniCartLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="miniCartLabel"><i class="fas fa-shopping-cart me-2"></i>Your cart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body" data-mini-cart-body>
+        <div class="mini-cart-skeleton" data-mini-cart-skeleton>
+          <div class="skeleton-line w-75"></div>
+          <div class="skeleton-line w-100"></div>
+          <div class="skeleton-line w-90"></div>
+          <div class="skeleton-line w-80"></div>
+        </div>
+        <div class="d-none" data-mini-cart-content></div>
+      </div>
+      <div class="offcanvas-footer p-3 border-top">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-muted">Total</span>
+          <span class="fw-semibold">$<span data-mini-cart-total>0.00</span></span>
+        </div>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-primary" href="<?= SITE_URL ?>/cart">View cart</a>
+          <a class="btn btn-success" href="<?= SITE_URL ?>/checkout">Checkout</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick view modal (used by product cards) -->
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="quickViewLabel">Quick view</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-5">
+                <div class="ratio ratio-4x3 rounded overflow-hidden bg-light position-relative">
+                  <img class="w-100 h-100 object-fit-cover" data-qv-img alt="">
+                  <div class="img-skeleton-overlay" data-qv-img-skel></div>
+                </div>
+              </div>
+              <div class="col-12 col-md-7">
+                <h4 class="h5 mb-2" data-qv-title></h4>
+                <div class="h5 mb-3">$<span data-qv-price></span></div>
+                <div class="d-flex gap-2 flex-wrap">
+                  <a class="btn btn-outline-primary" data-qv-details href="#">View details</a>
+                  <button class="btn btn-success" type="button" data-qv-add>Add to cart</button>
+                </div>
+                <div class="form-text mt-2">Tip: “Quick view” uses only data already on the page, so it can’t break server features.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Theme behaviors (best-seller tabs + responsive multi-item carousel) -->
+    <!-- Theme behaviors (filters, carousel, cart totals, toasts, back-to-top) -->
     <script src="<?= SITE_URL ?>/assets/js/app.js"></script>
-    
-    <!-- Custom JS -->
+
     <script>
-        // Auto-dismiss alerts after 5 seconds
-        setTimeout(() => {
-            document.querySelectorAll('.alert').forEach(alert => {
-                bootstrap.Alert.getOrCreateInstance(alert).close();
-            });
-        }, 5000);
-        
-        // Cart count update
-        function updateCartCount(count) {
-            const badge = document.querySelector('.badge-notification');
-            if (badge) {
-                badge.textContent = count;
-                if (count > 0) {
-                    badge.style.display = 'inline-block';
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
-        }
-        
-        // Add to cart with AJAX
-        function addToCart(productId, quantity = 1) {
-            $.ajax({
-                url: '<?= SITE_URL ?>/cart/add/' + productId,
-                method: 'POST',
-                data: { quantity: quantity },
-                success: function(response) {
-                    updateCartCount(response.count);
-                    alert('Product added to cart!');
-                },
-                error: function() {
-                    alert('Failed to add product to cart.');
-                }
-            });
-        }
-        
-        // Search suggestions
-        $('#searchInput').on('input', function() {
-            const query = $(this).val();
-            if (query.length > 2) {
-                // Implement search suggestions
-            }
+      // Keep this small block for backwards compatibility with pages that may call updateCartCount().
+      window.updateCartCount = function updateCartCount(count) {
+        const badge = document.querySelector('.badge-notification');
+        if (!badge) return;
+        badge.textContent = count;
+        badge.style.display = (count > 0) ? 'inline-block' : 'none';
+      };
+
+      // Auto-dismiss flash alerts after 5 seconds (non-blocking)
+      window.setTimeout(() => {
+        document.querySelectorAll('.alert').forEach((el) => {
+          try { bootstrap.Alert.getOrCreateInstance(el).close(); } catch (e) {}
         });
+      }, 5000);
     </script>
 </body>
 </html>

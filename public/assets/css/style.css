@@ -1,30 +1,283 @@
-/* Project theme helpers (Bootstrap-first)
-   Keep this file for small overrides so pages stay consistent.
+/*
+  Ecommerce theme (Bootstrap-first)
+  ------------------------------------------------------------
+  Goal: noticeably better UX without touching core PHP logic.
+  Keep this file as the single place for UI polish + a11y.
 */
 
-.brand-strip::-webkit-scrollbar { height: 8px; }
-.brand-strip::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 99px; }
+:root{
+  --app-bg: #f7f8fb;
+  --app-surface: #ffffff;
+  --app-border: rgba(33,37,41,.10);
+  --app-shadow: 0 12px 30px rgba(17,24,39,.10);
+  --app-shadow-sm: 0 6px 18px rgba(17,24,39,.08);
+  --app-radius: 16px;
+  --app-radius-sm: 12px;
+  --app-focus: 0 0 0 .25rem rgba(13,110,253,.25);
+}
+
+html{ scroll-behavior: smooth; }
+
+body{
+  background: var(--app-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-top: 70px; /* room for fixed navbar */
+}
+
+/* Accessible skip link */
+.skip-link{
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  z-index: 1100;
+  transform: translateY(-150%);
+  transition: transform .15s ease;
+}
+.skip-link:focus{ transform: translateY(0); }
+
+/* Better focus rings */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline: none;
+  box-shadow: var(--app-focus);
+}
+
+/* Navbar polish */
+.navbar{
+  backdrop-filter: saturate(160%) blur(10px);
+}
+.navbar.navbar-elevated{
+  box-shadow: var(--app-shadow-sm);
+}
+.navbar .nav-link{ opacity: .95; }
+.navbar .nav-link.active{
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Make the main container feel like a surface */
+main.container{
+  min-height: 60vh;
+}
+
+/* Cards */
+.card{
+  border-color: var(--app-border);
+}
+.product-card{
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm);
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.product-card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--app-shadow);
+}
+
+/* Images */
+.product-img{
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+  background: #eef2f7;
+}
+.cart-img{
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  background: #eef2f7;
+}
+
+.badge-notification{
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+/* Buttons */
+.btn{
+  border-radius: 999px;
+}
+.btn.btn-sm{
+  border-radius: 999px;
+}
+.btn-icon{
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+/* Inputs */
+.form-control, .input-group-text{
+  border-color: var(--app-border);
+}
+.form-control::placeholder{ color: rgba(33,37,41,.45); }
+
+/* Alerts: a bit softer */
+.alert{
+  border-radius: var(--app-radius-sm);
+}
+
+/* Footer */
+.footer{
+  background: #212529;
+  color: #ffffff;
+  padding: 40px 0 20px;
+  margin-top: 50px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.footer a{ color: rgba(255,255,255,.75); text-decoration: none; }
+.footer a:hover{ color: #ffffff; text-decoration: underline; }
+
+.social-icons a{
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.10);
+  border-radius: 999px;
+  margin-right: 10px;
+  transition: background .18s ease;
+}
+.social-icons a:hover{ background: #0d6efd; }
+
+/* Brand strip scrollbar */
+.brand-strip::-webkit-scrollbar{ height: 8px; }
+.brand-strip::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.14); border-radius: 999px; }
 
 /* Carousel: make multi-item slides look nicer */
-.carousel .carousel-inner { padding-bottom: 18px; }
-.carousel .carousel-indicators [data-bs-target] {
+.carousel .carousel-inner{ padding-bottom: 18px; }
+.carousel .carousel-indicators [data-bs-target]{
   width: 10px;
   height: 10px;
-  border-radius: 99px;
+  border-radius: 999px;
 }
 
 /* Improve hit area on carousel controls over white backgrounds */
 .carousel .carousel-control-prev-icon,
-.carousel .carousel-control-next-icon {
+.carousel .carousel-control-next-icon{
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
 }
 
 /* Tabs badges */
-.best-seller-tabs .nav-link {
+.best-seller-tabs .nav-link{
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
 /* Newsletter form spacing */
-.newsletter-form .form-text { margin-top: .5rem; }
+.newsletter-form .form-text{ margin-top: .5rem; }
+
+/* Toasts */
+.toast-container{
+  z-index: 2000;
+}
+
+/* Back to top */
+.back-to-top{
+  position: fixed;
+  right: 16px;
+  bottom: 18px;
+  display: none;
+  z-index: 1050;
+}
+.back-to-top.show{ display: inline-flex; }
+
+/* -----------------------------------------
+   Next-level UX additions
+   - Skeletons
+   - Quick view modal polish
+   - Product toolbar + range slider
+   - Mini-cart offcanvas
+------------------------------------------ */
+
+/* Skeleton shimmer */
+.img-skeleton,
+.img-skeleton-overlay,
+.skeleton-line{
+  position: relative;
+  overflow: hidden;
+}
+.img-skeleton::before,
+.img-skeleton-overlay::before,
+.skeleton-line::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.06), rgba(0,0,0,.12), rgba(0,0,0,.06));
+  transform: translateX(-100%);
+  animation: shimmer 1.15s infinite;
+}
+.img-skeleton.is-loaded::before{ display: none; }
+.img-skeleton-overlay{ pointer-events: none; }
+.img-skeleton-overlay.is-loaded::before{ display: none; }
+.skeleton-line{ height: 14px; border-radius: 999px; margin-bottom: 10px; }
+
+@keyframes shimmer{
+  100% { transform: translateX(100%); }
+}
+
+/* Product toolbar */
+.product-toolbar{
+  position: sticky;
+  top: calc(72px + 12px);
+  z-index: 3;
+  backdrop-filter: blur(8px);
+}
+@media (max-width: 991.98px){
+  .product-toolbar{ top: calc(64px + 10px); }
+}
+
+/* Dual range layout (simple) */
+.range-2{
+  position: relative;
+  height: 34px;
+}
+.range-2 .form-range{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 12px;
+  pointer-events: none;
+}
+.range-2 .form-range[data-price-min]{ pointer-events: auto; }
+.range-2 .form-range[data-price-max]{ pointer-events: auto; }
+
+/* Mini cart */
+.offcanvas-footer{ background: #fff; }
+.mini-cart-item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.mini-cart-item:last-child{ border-bottom: 0; }
+.mini-cart-item img{
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #eef2f7;
+}
+.mini-cart-item__title{
+  font-weight: 600;
+  line-height: 1.15;
+}
+.mini-cart-item__meta{ color: rgba(33,37,41,.70); font-size: .9rem; }
+
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce){
+  *{ scroll-behavior: auto !important; }
+  .product-card{ transition: none; }
+}

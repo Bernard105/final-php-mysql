@@ -1,0 +1,31 @@
+2026-02-05 16:44:05 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'description' in 'field list' in C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Models\BaseModel.php on line 46
+Stack trace: #0 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Models\BaseModel.php(46): PDO->prepare('INSERT INTO cat...')
+#1 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Controllers\Admin\CategoryController.php(57): App\Models\BaseModel->create(Array)
+#2 [internal function]: App\Controllers\Admin\CategoryController->store()
+#3 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(225): ReflectionMethod->invokeArgs(Object(App\Controllers\Admin\CategoryController), Array)
+#4 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(136): App\Core\Router->invokeCallback(Array, Object(App\Core\Request), Array)
+#5 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Middleware\AdminMiddleware.php(34): App\Core\Router->App\Core\{closure}(Object(App\Core\Request))
+#6 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(149): App\Middleware\AdminMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#7 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(154): App\Core\Router->App\Core\{closure}(Object(App\Core\Request))
+#8 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\public\index.php(8): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 {main}
+2026-02-05 16:44:23 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'description' in 'field list' in C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Models\BaseModel.php on line 46
+Stack trace: #0 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Models\BaseModel.php(46): PDO->prepare('INSERT INTO bra...')
+#1 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Controllers\Admin\BrandController.php(54): App\Models\BaseModel->create(Array)
+#2 [internal function]: App\Controllers\Admin\BrandController->store()
+#3 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(225): ReflectionMethod->invokeArgs(Object(App\Controllers\Admin\BrandController), Array)
+#4 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(136): App\Core\Router->invokeCallback(Array, Object(App\Core\Request), Array)
+#5 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Middleware\AdminMiddleware.php(34): App\Core\Router->App\Core\{closure}(Object(App\Core\Request))
+#6 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(149): App\Middleware\AdminMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#7 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(154): App\Core\Router->App\Core\{closure}(Object(App\Core\Request))
+#8 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\public\index.php(8): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 {main}
+2026-02-05 17:18:47 - SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'taideptrai' for key 'username' in C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Models\BaseModel.php on line 52
+Stack trace: #0 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Models\BaseModel.php(52): PDOStatement->execute()
+#1 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Controllers\UserController.php(52): App\Models\BaseModel->create(Array)
+#2 [internal function]: App\Controllers\UserController->register()
+#3 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(225): ReflectionMethod->invokeArgs(Object(App\Controllers\UserController), Array)
+#4 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(136): App\Core\Router->invokeCallback(Array, Object(App\Core\Request), Array)
+#5 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\app\Core\Router.php(154): App\Core\Router->App\Core\{closure}(Object(App\Core\Request))
+#6 C:\xampp\htdocs\vtc-php\Tran-Manh-Tai-final_assgiment\ecommerce-onnhat\public\index.php(8): App\Core\Router->dispatch(Object(App\Core\Request))
+#7 {main}
